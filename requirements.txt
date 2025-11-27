@@ -1,0 +1,4 @@
+requests
+trafilatura
+markdownify
+tqdm
