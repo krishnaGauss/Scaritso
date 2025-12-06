@@ -1,7 +1,7 @@
 import argparse
 import sys
 from tqdm import tqdm
-from crawler import sitemap_parser, url_discovery, fetcher, extractor, markdown_converter, writer
+from crawler import sitemap_parser, url_discovery, fetcher, extractor, markdown_converter, writer, ai_enrichment
 
 def process_url(url):
     """
@@ -20,8 +20,11 @@ def process_url(url):
     markdown = markdown_converter.to_markdown(content)
     if not markdown:
         return None
+
+    # AI Enrichment
+    ai_metadata = ai_enrichment.analyze_content(markdown)
         
-    filepath = writer.save_file(url, markdown)
+    filepath = writer.save_file(url, markdown, ai_metadata=ai_metadata)
     return filepath
 
 def auto_mode(base_url, max_pages):

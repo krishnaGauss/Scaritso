@@ -17,7 +17,7 @@ def get_safe_filename(url):
     # Ensure unique filenames if needed, but for now just basic mapping
     return f"{filename}.md"
 
-def save_file(url, content, output_dir="knowledge-base"):
+def save_file(url, content, ai_metadata=None, output_dir="knowledge-base"):
     """
     Saves the content to a markdown file with metadata.
     """
@@ -48,10 +48,18 @@ def save_file(url, content, output_dir="knowledge-base"):
             title = line[2:].strip()
             break
 
+    # Format AI metadata for frontmatter
+    ai_frontmatter = ""
+    if ai_metadata:
+        ai_frontmatter = f"""
+ai_summary: "{ai_metadata.get('summary', '').replace('"', "'")}"
+ai_tags: {ai_metadata.get('tags', [])}
+ai_score: {ai_metadata.get('score', 0)}"""
+
     metadata = f"""---
 title: {title}
 url: {url}
-crawled_at: {timestamp}
+crawled_at: {timestamp}{ai_frontmatter}
 ---
 
 """
